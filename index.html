@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteHub - Your Personal Digital Notebook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo-icon">📝</div>
+        <h2>Note<span>Hub</span></h2>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-category="all">
+          <span class="icon">📁</span> All Notes
+          <span class="badge" id="count-all">0</span>
+        </button>
+        <button class="nav-item" data-category="pinned">
+          <span class="icon">📌</span> Pinned
+          <span class="badge" id="count-pinned">0</span>
+        </button>
+        <button class="nav-item" data-category="Personal">
+          <span class="icon">👤</span> Personal
+          <span class="badge" id="count-personal">0</span>
+        </button>
+        <button class="nav-item" data-category="Work">
+          <span class="icon">💼</span> Work
+          <span class="badge" id="count-work">0</span>
+        </button>
+        <button class="nav-item" data-category="Ideas">
+          <span class="icon">💡</span> Ideas
+          <span class="badge" id="count-ideas">0</span>
+        </button>
+        <button class="nav-item" data-category="Study">
+          <span class="icon">🎓</span> Study
+          <span class="badge" id="count-study">0</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="theme-toggle" class="theme-btn" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search notes by title, content, or tag...">
+          <button id="clear-search" class="clear-btn" style="display: none;">&times;</button>
+        </div>
+
+        <div class="top-actions">
+          <button id="export-btn" class="secondary-btn" title="Export Notes as JSON">
+            <span>💾</span> Export
+          </button>
+          <button id="new-note-btn" class="primary-btn">
+            <span>+</span> Create Note
+          </button>
+        </div>
+      </header>
+
+      <!-- Category Filter Pills & Stats -->
+      <div class="sub-header">
+        <h1 id="current-view-title">All Notes</h1>
+        <div class="sort-wrapper">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title">Title (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Notes Grid -->
+      <section id="notes-grid" class="notes-grid">
+        <!-- Dynamic Notes Rendered Here -->
+      </section>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">📂</div>
+        <h3>No notes found</h3>
+        <p>Start organizing your thoughts by clicking "+ Create Note".</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Note Modal (Create / Edit) -->
+  <div id="note-modal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">New Note</h3>
+        <button class="close-modal-btn" id="close-modal-btn">&times;</button>
+      </div>
+
+      <form id="note-form" class="note-form">
+        <input type="hidden" id="note-id">
+
+        <div class="form-group">
+          <input type="text" id="note-title-input" placeholder="Note Title..." required autofocus>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="note-category-select">Category</label>
+            <select id="note-category-select">
+              <option value="Personal">Personal</option>
+              <option value="Work">Work</option>
+              <option value="Ideas">Ideas</option>
+              <option value="Study">Study</option>
+            </select>
+          </div>
+
+          <div class="form-group half">
+            <label>Color Accent</label>
+            <div class="color-picker-row">
+              <label class="color-option" title="Blue">
+                <input type="radio" name="note-color" value="#3b82f6" checked>
+                <span class="color-swatch" style="background-color: #3b82f6;"></span>
+              </label>
+              <label class="color-option" title="Emerald">
+                <input type="radio" name="note-color" value="#10b981">
+                <span class="color-swatch" style="background-color: #10b981;"></span>
+              </label>
+              <label class="color-option" title="Amber">
+                <input type="radio" name="note-color" value="#f59e0b">
+                <span class="color-swatch" style="background-color: #f59e0b;"></span>
+              </label>
+              <label class="color-option" title="Rose">
+                <input type="radio" name="note-color" value="#ef4444">
+                <span class="color-swatch" style="background-color: #ef4444;"></span>
+              </label>
+              <label class="color-option" title="Purple">
+                <input type="radio" name="note-color" value="#8b5cf6">
+                <span class="color-swatch" style="background-color: #8b5cf6;"></span>
+              </label>
+              <label class="color-option" title="Pink">
+                <input type="radio" name="note-color" value="#ec4899">
+                <span class="color-swatch" style="background-color: #ec4899;"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="note-content-input">Content</label>
+          <textarea id="note-content-input" rows="8" placeholder="Write down your thoughts, tasks, or ideas..." required></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="secondary-btn" id="cancel-note-btn">Cancel</button>
+          <button type="submit" class="primary-btn">Save Note</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
